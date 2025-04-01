@@ -189,7 +189,7 @@ services:
       MYSQL_PASSWORD: P@ssw0rd
     ports:
       - "3306:3306"
-	`volumes:`
+      - volumes:
 	- ./configuracio/mysql:/etc/mysql
 	- ./mysql:var/lib/mysql`
 ```
@@ -202,6 +202,8 @@ services:
 <p align="center">
   <img src="https://i.imgur.com/G7l0Knj.png">
 </p>
+
+<p align="center"><i>Ara ja estem preparats per connectar-nos a la BBDD.</i></p>
 
 ---
 
