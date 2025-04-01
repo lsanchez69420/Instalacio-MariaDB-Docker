@@ -190,8 +190,8 @@ services:
     ports:
       - "3306:3306"
       - volumes:
-	- ./configuracio/mysql:/etc/mysql
-	- ./mysql:var/lib/mysql
+        - ./configuracio/mysql:/etc/mysql
+        - ./mysql:var/lib/mysql
 ```
 
 <p align="center">
