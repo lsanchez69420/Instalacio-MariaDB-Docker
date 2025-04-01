@@ -191,7 +191,7 @@ services:
       - "3306:3306"
       - volumes:
 	- ./configuracio/mysql:/etc/mysql
-	- ./mysql:var/lib/mysql`
+	- ./mysql:var/lib/mysql
 ```
 
 <p align="center">
