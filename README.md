@@ -289,3 +289,54 @@ docker-compose up -d
 </p>
 
 ---
+
+# Securitzar l'instal·lació
+
+- Podem utilitzar SSL per xifrar les dades que viatgen des del client fins la BBDD combinant OpenSSL i Docker:
+
+```bash
+# Comandes per generar un certificat autofirmat 
+openssl genrsa 2048 > ca-key.pem
+
+openssl req -new -x509 -nodes -days 365 -key ca-key.pem -out ca-cert.pem
+
+openssl req -newkey rsa:2048 -nodes -keyout server-key.pem -out server-req.pem
+
+openssl x509 -req -in server-req.pem -days 365 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.pem
+```
+
+- Un cop generat el certificat, afegirem les següents línies a l'arxiu docker.compose.yml:
+
+```yaml
+version: "3.8"
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb_proves
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssword
+      MYSQL_DATABASE: proves
+      MYSQL_USER: llucdani
+      MYSQL_PASSWORD: P@ssw0rd
+    ports:
+      - "3306:3306"
+    - volumes:
+      - ./configuracio/mysql:/etc/mysql
+      - ./mysql:var/lib/mysql
+      - ./ssl:/etc/mysql/ssl
+    command: >
+      --ssl-ca=/etc/mysql/ssl/ca-cert.pem
+      --ssl-cert=/etc/mysql/ssl/server-cert.pem
+      --ssl-key=/etc/mysql/ssl/server-key.pem
+```
+
+- Ara ja ens podrem conectar utilitzant l'opció "SSL" en HeidiSQL
+
+<p align="center">
+  <img src="https://i.imgur.com/fqjoluf.png">
+</p>
+
+
+
